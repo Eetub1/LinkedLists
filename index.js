@@ -23,18 +23,36 @@ class LinkedList {
     }
 
     size() {
-        
+        if (this.firstNode !== null) {
+            let sum = 0
+            let current = this.firstNode
+            while (true) {
+                sum += 1
+                if (current.nextNode === null) break
+                else {current = current.nextNode}
+            }
+            return sum
+       } 
+       return 0
     }
 
-    head() {
-       return this.firstNode 
-    }
+    head() {return this.firstNode}
 
-    tail() {
-        return this.lastNode
-    }
+    tail() {return this.lastNode}
 
-    at(index) {}
+    at(index) {
+            if (this.firstNode !== null) {
+            let count = 0
+            let current = this.firstNode
+            while (true) {
+                if (count === index) return current
+                count++
+                if (current.nextNode === null) break
+                else {current = current.nextNode}
+            }
+       } 
+       return null
+    }
 
     pop() {}
 
@@ -43,8 +61,6 @@ class LinkedList {
     find(value) {}
 
     toString() {}
-
-
 }
 
 class Node {
@@ -57,11 +73,14 @@ class Node {
 function main() {
     const list = new LinkedList()
     list.append(1)
+    list.append(10)
     list.append(2)
+    list.append(3)
     list.prepend(0)
-    //console.log(list.size())
+    console.log(list.size())
     console.log(list.head().value)
     console.log(list.tail().value)
+    console.log(list.at(2))
 }
 
 main()

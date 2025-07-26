@@ -39,7 +39,7 @@ class LinkedList {
 
     at(index) {
         let size = this.size()
-        if (index >= size) return null
+        if (index >= size || index < 0) return null
         let current = this.head()
         for (let i = 0; i < size; i++) {
             if (i === index) return current
@@ -96,12 +96,17 @@ class LinkedList {
     }
 
     insertAt(value, index) {
+        if (index < 0) return
         const newNode = new Node(value)
         const size = this.size()
         if (size === 0 && index === 0) {
             this.firstNode = newNode
             this.lastNode = newNode
-        } else if (index >= size) {
+        } else if (index === size) {
+            const currentLast = this.lastNode
+            this.lastNode = newNode
+            currentLast.nextNode = newNode
+        } else if (index > size) {
             return
         } else if (index === 0) {
             const currentFirst = this.head()
@@ -145,7 +150,27 @@ class Node {
 function main() {
     const list = new LinkedList()
 
-    list.append(1)
+    list.insertAt(1, 0)
+    console.log("First: ", list.head())
+    console.log("Last: ", list.tail())
+    console.log(list.toString())
+    console.log()
+
+    list.append(2)
+
+    list.insertAt(3, 2)
+    console.log("First: ", list.head())
+    console.log("Last: ", list.tail())
+    console.log(list.toString())
+    console.log()
+
+    list.insertAt(4, 3)
+    console.log("First: ", list.head())
+    console.log("Last: ", list.tail())
+    console.log(list.toString())
+    console.log()
+
+    /*list.append(1)
     list.append(10)
     list.append(2)
     list.append(3)
@@ -181,7 +206,7 @@ function main() {
     console.log(list.toString())
 
     list.removeAt(3)
-    console.log(list.toString())
+    console.log(list.toString())*/
 }
 
 main()

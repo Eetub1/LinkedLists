@@ -41,11 +41,10 @@ class LinkedList {
         let size = this.size()
         if (index >= size || index < 0) return null
         let current = this.head()
-        for (let i = 0; i < size; i++) {
-            if (i === index) return current
+        for (let i = 0; i < index; i++) {
             current = current.nextNode 
         }
-        return null
+        return current
     }
 
     pop() {
@@ -96,27 +95,25 @@ class LinkedList {
     }
 
     insertAt(value, index) {
-        if (index < 0) return
-        const newNode = new Node(value)
         const size = this.size()
+        if (index < 0 || index > size) return
+        const newNode = new Node(value)
         if (size === 0 && index === 0) {
             this.firstNode = newNode
             this.lastNode = newNode
+        //here it is guaranteed that size > 0
         } else if (index === size) {
             const currentLast = this.lastNode
             this.lastNode = newNode
             currentLast.nextNode = newNode
-        } else if (index > size) {
-            return
         } else if (index === 0) {
             const currentFirst = this.head()
             this.firstNode = newNode
             newNode.nextNode = currentFirst
         } else {
             const prev = this.at(index - 1)
-            const next = this.at(index)
+            newNode.nextNode = prev.nextNode
             prev.nextNode = newNode
-            newNode.nextNode = next
         }
         this.length++
     }
@@ -131,9 +128,11 @@ class LinkedList {
             const prev = this.at(index - 1)
             prev.nextNode = null
             this.lastNode = prev
+        } else if (index === 0) {
+            this.firstNode = this.firstNode.nextNode
         } else {
             const prev = this.at(index - 1)
-            const next = this.at(index + 1)
+            const next = prev.nextNode.nextNode
             prev.nextNode = next
         }
         this.length--
@@ -150,27 +149,7 @@ class Node {
 function main() {
     const list = new LinkedList()
 
-    list.insertAt(1, 0)
-    console.log("First: ", list.head())
-    console.log("Last: ", list.tail())
-    console.log(list.toString())
-    console.log()
-
-    list.append(2)
-
-    list.insertAt(3, 2)
-    console.log("First: ", list.head())
-    console.log("Last: ", list.tail())
-    console.log(list.toString())
-    console.log()
-
-    list.insertAt(4, 3)
-    console.log("First: ", list.head())
-    console.log("Last: ", list.tail())
-    console.log(list.toString())
-    console.log()
-
-    /*list.append(1)
+    list.append(1)
     list.append(10)
     list.append(2)
     list.append(3)
@@ -206,7 +185,7 @@ function main() {
     console.log(list.toString())
 
     list.removeAt(3)
-    console.log(list.toString())*/
+    console.log(list.toString())
 }
 
 main()

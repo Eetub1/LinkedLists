@@ -2,6 +2,7 @@ class LinkedList {
     constructor() {
         this.firstNode = null
         this.lastNode = null
+        this.length = 0
     }
 
     append(value) {
@@ -12,28 +13,24 @@ class LinkedList {
             this.lastNode.nextNode = newNode
         }
         this.lastNode = newNode
+        this.length++
     }
 
-    //right now if list is empty then this doesn't work probably
     prepend(value) {
         const newNode = new Node(value)
-        const currentFirstNode = this.firstNode
-        this.firstNode = newNode
-        this.firstNode.nextNode = currentFirstNode
+        if (this.firstNode === null) {
+            this.firstNode = newNode
+            this.lastNode = newNode
+        } else {
+            const currentFirstNode = this.firstNode
+            this.firstNode = newNode
+            this.firstNode.nextNode = currentFirstNode
+        }
+        this.length++
     }
 
     size() {
-        if (this.firstNode !== null) {
-            let sum = 0
-            let current = this.firstNode
-            while (true) {
-                sum += 1
-                if (current.nextNode === null) break
-                else {current = current.nextNode}
-            }
-            return sum
-       } 
-       return 0
+        return this.length
     }
 
     head() {return this.firstNode}
@@ -53,6 +50,7 @@ class LinkedList {
 
     pop() {
         const size = this.size()
+        if (size < 1) return
         if (size < 2) {
             this.firstNode = null
             this.lastNode = null
@@ -61,13 +59,12 @@ class LinkedList {
             secondLast.nextNode = null
             this.lastNode = secondLast
         }
+        this.length--
     }
 
     contains(value) {
-        const size = this.size()
-        if (size < 1) return false
         let current = this.head()
-        for (let i = 0; i < size; i++) {
+        while (current) {
             if (current.value === value) return true
             current = current.nextNode
         }
@@ -90,7 +87,7 @@ class LinkedList {
         if (size < 1) return "( null )"
         let listAsString = ""
         let current = this.head()
-        for (let i = 0; i < size; i++) {
+        while (current) {
             listAsString += `( ${current.value} ) -> `
             current = current.nextNode
         }
@@ -102,7 +99,8 @@ class LinkedList {
         const newNode = new Node(value)
         const size = this.size()
         if (size === 0 && index === 0) {
-            this.append(newNode)
+            this.firstNode = newNode
+            this.lastNode = newNode
         } else if (index >= size) {
             return
         } else if (index === 0) {
@@ -115,6 +113,7 @@ class LinkedList {
             prev.nextNode = newNode
             newNode.nextNode = next
         }
+        this.length++
     }
 
     removeAt(index) {
@@ -131,8 +130,8 @@ class LinkedList {
             const prev = this.at(index - 1)
             const next = this.at(index + 1)
             prev.nextNode = next
-
         }
+        this.length--
     }
 }
 
@@ -145,6 +144,7 @@ class Node {
 
 function main() {
     const list = new LinkedList()
+
     list.append(1)
     list.append(10)
     list.append(2)
